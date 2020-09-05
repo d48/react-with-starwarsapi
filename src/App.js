@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./styles.css";
+import Ship from "./components/Ship";
 
-function App() {
+const makeShips = (ships) => {
+  return ships.map((ship) => {
+    return (
+      <Ship
+        name={ship.name}
+        model={ship.model}
+        starshipClass={ship.starship_class}
+      />
+    );
+  });
+};
+
+export default function App() {
+  const [shipData, setShipData] = useState({
+    count: 0,
+    results: [],
+  });
+
+  useEffect(() => {
+    fetch("http://swapi.dev/api/starships/?page=2")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setShipData(data);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>List of Star Wars Starships</h1>
+      <h2>Total # of ships: {shipData.count}</h2>
+      {makeShips(shipData.results)}
     </div>
   );
 }
-
-export default App;
