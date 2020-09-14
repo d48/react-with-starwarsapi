@@ -1,3 +1,5 @@
+Sample React app that consumes the [Star Wars API](https://swapi.dev/) for learning how to consume and display data
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
