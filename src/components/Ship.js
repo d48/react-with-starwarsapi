@@ -1,5 +1,18 @@
 import React from "react";
 
+const makeShips = (ships, errorFromResponse) => {
+  return ships.map((ship, key) => {
+    return (
+      <Ship
+        key={key}
+        name={ship.name}
+        model={ship.model}
+        starshipClass={ship.starship_class}
+      />
+    );
+  });
+};
+
 const Ship = (props) => {
   const { name, model, starshipClass } = { ...props };
   return (
@@ -16,4 +29,4 @@ const Ship = (props) => {
   );
 };
 
-export default Ship;
+export default makeShips

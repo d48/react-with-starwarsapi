@@ -1,0 +1,15 @@
+.error {
+  color: red;
+}
+
+button {
+  background-color: lightblue;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+}
+
+.currentpage {
+  font-style: italic;
+  margin: 0 10px;
+}
