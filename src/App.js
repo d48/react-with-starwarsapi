@@ -12,32 +12,42 @@ export default function App() {
   });
 
   const [errorMessage, setErrorMessage] = useState(null)
+  const [pageTotal, setPageTotal] = useState(0)
+
+  const processData = (data) => {
+    console.log(data);
+    setShipData(data);
+  }
+
+  const processError = (error) => {
+    setErrorMessage(error.toString())
+  }
 
   const getData = (url) => {
     fetchAPI(url
-      , (data) => {
-        console.log(data);
-        setShipData(data);
-      }
-      , (error) => {
-        setErrorMessage(error.toString())
-      }
+      , processData
+      , processError
     )
   }
 
   useEffect(() => {
-    getData("http://swapi.dev/api/starships/")
+    fetchAPI("http://swapi.dev/api/starships/"
+      , (data) => {
+        processData(data)
+        setPageTotal(Math.ceil(data.count / data.results.length))
+      }
+      , processError
+    )
   }, []);
-
 
   return (
     <div className="App">
       <h1>List of Star Wars Starships</h1>
       <h2>Total # of ships: {shipData.count}</h2>
       <h3 key="error" className="error">{typeof errorMessage === 'string' ? errorMessage : ''}</h3>
-      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} />
+      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} pageTotal={pageTotal} />
       {makeShips(shipData.results)}
-      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData}/>
+      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} pageTotal={pageTotal} />
     </div>
   );
 }

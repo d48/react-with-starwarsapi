@@ -1,5 +1,13 @@
 import React from "react";
 
+const ShipAttribute = (props) => {
+  return (
+    <label>
+      <span></span>
+    </label>
+  )
+}
+
 const makeShips = (ships, errorFromResponse) => {
   return ships.map((ship, key) => {
     return (
@@ -20,6 +28,7 @@ const Ship = (props) => {
       <h3>Name: {name}</h3>
       <article>
         <section>
+          <ShipAttribute />
           <h4>Model: {model}</h4>
           <h4>Starship Class: {starshipClass}</h4>
         </section>
