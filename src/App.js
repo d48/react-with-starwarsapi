@@ -13,6 +13,7 @@ export default function App() {
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [pageTotal, setPageTotal] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
 
   const processData = (data) => {
     console.log(data);
@@ -23,9 +24,20 @@ export default function App() {
     setErrorMessage(error.toString())
   }
 
-  const getData = (url) => {
+  const getData = (url, isNext = false) => {
     fetchAPI(url
-      , processData
+      , (data) => {
+        // set ship data
+        setShipData(data)
+
+        // set current page
+        if (isNext) {
+          setCurrentPage(currentPage + 1)
+        } else {
+          setCurrentPage(currentPage - 1)
+        }
+
+      }
       , processError
     )
   }
@@ -35,6 +47,7 @@ export default function App() {
       , (data) => {
         processData(data)
         setPageTotal(Math.ceil(data.count / data.results.length))
+        setCurrentPage(1)
       }
       , processError
     )
@@ -45,9 +58,9 @@ export default function App() {
       <h1>List of Star Wars Starships</h1>
       <h2>Total # of ships: {shipData.count}</h2>
       <h3 key="error" className="error">{typeof errorMessage === 'string' ? errorMessage : ''}</h3>
-      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} pageTotal={pageTotal} />
+      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} pageTotal={pageTotal} currentPage={currentPage} />
       {makeShips(shipData.results)}
-      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} pageTotal={pageTotal} />
+      <NavBar next={shipData.next} previous={shipData.previous} onClickHandler={getData} pageTotal={pageTotal} currentPage={currentPage} />
     </div>
   );
 }
